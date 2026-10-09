@@ -1,0 +1,53 @@
+% 开题报告封面：A4 绝对定位，依据学校 Word 封面的位置与字号排版。
+% 采用 TikZ 仅影响封面；其余页面保持 nwafuthesis 文档类的页面设置。
+\newCJKfontfamily\ProposalSong{Noto Serif CJK SC}
+\newCJKfontfamily\ProposalHei{Noto Sans CJK SC}
+\newfontfamily\ProposalLatin{Tinos}
+
+\newcommand{\ProposalCoverNode}[3]{%
+  \node[anchor=center,inner sep=0pt] at
+  ([xshift=#1mm,yshift=-#2mm]current page.north west) {#3};%
+}
+\newcommand{\ProposalCoverField}[3]{%
+  \node[anchor=west,inner sep=0pt] at
+    ([xshift=45.5mm,yshift=-#1mm]current page.north west)
+    {{\ProposalSong\fontsize{15pt}{17pt}\selectfont\makebox[55mm][s]{#2}}};%
+  \node[anchor=west,inner sep=0pt] at
+    ([xshift=100.5mm,yshift=-#1mm]current page.north west)
+    {{\ProposalSong\fontsize{15pt}{17pt}\selectfont\underline{\makebox[64mm][c]{#3}}}};%
+}
+\begin{titlepage}
+\thispagestyle{empty}
+\begin{tikzpicture}[remember picture,overlay]
+  \ProposalCoverNode{105}{53}{%
+    {\ProposalSong\fontsize{18pt}{25pt}\selectfont 西北农林科技大学}}
+  \ProposalCoverNode{105}{64.5}{%
+    {\ProposalSong\fontsize{18pt}{25pt}\selectfont
+      \underline{\makebox[24mm][c]{\ProposalGrade}}级\ProposalDegree 研究生学位论文}}
+  \ProposalCoverNode{105}{76}{%
+    {\ProposalSong\fontsize{18pt}{25pt}\selectfont 开题报告}}
+
+  \ProposalCoverNode{105}{114}{%
+    {\ProposalHei\fontsize{22pt}{29pt}\selectfont
+    \parbox[c]{177mm}{\centering\ProposalTitleZh}}}
+  \ProposalCoverNode{105}{141}{%
+    {\ProposalLatin\fontsize{22pt}{33pt}\selectfont
+    \parbox[c]{180mm}{\centering\ProposalTitleEn}}}
+
+  \ProposalCoverField{180.2}{学\hfill 院（系、所）}{\ProposalCollege}
+  \ProposalCoverField{190.9}{一级学科／专业领域}{\ProposalMajor}
+  \ProposalCoverField{201.7}{研究生姓名及学号}{\ProposalStudent\quad\ProposalStudentId}
+  \ProposalCoverField{212.5}{指导教师姓名}{\ProposalSupervisor}
+  \ProposalCoverField{223.3}{开题论证小组组长姓名}{\ProposalChair}
+  \ProposalCoverField{234.1}{开题论证小组成员姓名}{\ProposalMembersFirst}
+  \node[anchor=west,inner sep=0pt] at
+    ([xshift=100.5mm,yshift=-244.9mm]current page.north west)
+    {{\ProposalSong\fontsize{15pt}{17pt}\selectfont
+      \underline{\makebox[64mm][c]{\ProposalMembersSecond}}}};
+
+  \ProposalCoverNode{105}{263.1}{%
+    {\ProposalSong\fontsize{15pt}{20pt}\selectfont
+      研究生通过开题论证日期：\quad\ProposalDate}}
+\end{tikzpicture}
+\null
+\end{titlepage}

@@ -1,0 +1,20 @@
+% 公开示例仅包含通用占位内容。
+% 复制为 information-private.tex（Git 忽略该文件）后再填写真实信息。
+\newcommand{\ProposalGrade}{20XX}
+\newcommand{\ProposalTitleZh}{开题报告中文标题第一行\\开题报告中文标题第二行}
+\newcommand{\ProposalTitleEn}{English Title of the\\Research Proposal\\Goes Here}
+\newcommand{\ProposalCollege}{学院（系、所）名称}
+\newcommand{\ProposalMajor}{一级学科或专业领域}
+\newcommand{\ProposalStudent}{研究生姓名}
+\newcommand{\ProposalStudentId}{学号}
+\newcommand{\ProposalSupervisor}{指导教师姓名、职称}
+\newcommand{\ProposalChair}{论证小组组长姓名}
+\newcommand{\ProposalMembersFirst}{论证小组成员姓名}
+\newcommand{\ProposalMembersSecond}{其他论证小组成员姓名}
+\newcommand{\ProposalDate}{20XX 年 XX 月 XX 日}
+
+% 直接读取 nwafuthesis 的 master / doctor 文档类选项，自动显示硕士或博士。
+\ExplSyntaxOn
+\NewDocumentCommand{\ProposalDegree}{}
+  {\int_compare:nNnTF {\g__nwafu_thesis_type_int} = {1} {博士} {硕士}}
+\ExplSyntaxOff

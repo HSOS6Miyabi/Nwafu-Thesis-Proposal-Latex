@@ -1,0 +1,52 @@
+% !TeX program = xelatex
+% 西北农林科技大学硕士/博士研究生开题报告
+% 使用 nwafuthesis 的目录、章节、页眉页脚和参考文献格式。
+% 切换学位层次：type = master / doctor。
+% 切换单双面：oneside / twoside。
+\documentclass[type=master,twoside]{nwafuthesis}
+
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usepackage{booktabs}
+\usepackage{amsmath}
+
+\setmainfont{Tinos}
+\setsansfont{Liberation Sans}
+\setmonofont{DejaVu Sans Mono}
+\setmathfont{latinmodern-math.otf}
+\setCJKmainfont{Noto Serif CJK SC}
+\setCJKsansfont{Noto Sans CJK SC}
+\setCJKmonofont{Noto Sans Mono CJK SC}
+\setCJKfamilyfont{nwafu@hei}{Noto Sans CJK SC}
+\setCJKfamilyfont{nwafu@kai}{FandolKai-Regular.otf}
+
+\IfFileExists{cover/information-private.tex}{%
+  \input{cover/information-private.tex}%
+}{%
+  \input{cover/information.example.tex}%
+}
+
+\nwafuset{
+  style = {
+    auto-make-cover = false,
+    font = none,                % 显式指定跨平台字体
+    cjk-font = none,            % 使用上方定义的中文字体
+    bib-resource = {bib/references.bib},
+  },
+  info = {
+    ptype = academic,
+    title = {开题报告},
+    title* = {Thesis Proposal},
+  },
+}
+
+\begin{document}
+\input{cover/cover.tex}
+\makefront
+\mainmatter
+\include{contents/01-background}
+\include{contents/02-methods}
+\include{contents/03-plan}
+\bibmatter*
+\printbibliography
+\end{document}

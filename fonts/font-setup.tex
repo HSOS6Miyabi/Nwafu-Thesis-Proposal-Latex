@@ -1,0 +1,54 @@
+% XeLaTeX font detection: use Word-compatible fonts when installed.
+% Cover and body use the same font selection.
+\IfFontExistsTF{Times New Roman}{%
+  \setmainfont{Times New Roman}%
+  \typeout{Proposal Latin font: Times New Roman}%
+}{%
+  \setmainfont{XITS}[
+    Extension=.otf,
+    UprightFont=*-Regular,
+    BoldFont=*-Bold,
+    ItalicFont=*-Italic,
+    BoldItalicFont=*-BoldItalic
+  ]%
+  \typeout{Proposal Latin font: XITS}%
+}
+\setsansfont{Liberation Sans}
+\setmonofont{DejaVu Sans Mono}
+\setmathfont{XITSMath-Regular.otf}
+
+\IfFontExistsTF{SimSun}{%
+  \setCJKfamilyfont{rm}{SimSun}[AutoFakeBold=2]%
+  \newCJKfontfamily\ProposalSong{SimSun}[AutoFakeBold=2]%
+  \typeout{Proposal Song font: SimSun}%
+}{%
+  \IfFontExistsTF{宋体}{%
+    \setCJKfamilyfont{rm}{宋体}[AutoFakeBold=2]%
+    \newCJKfontfamily\ProposalSong{宋体}[AutoFakeBold=2]%
+    \typeout{Proposal Song font: Chinese Songti}%
+  }{%
+    \setCJKfamilyfont{rm}{FandolSong-Regular.otf}[BoldFont=FandolSong-Bold.otf]%
+    \newCJKfontfamily\ProposalSong{FandolSong-Regular.otf}[BoldFont=FandolSong-Bold.otf]%
+    \typeout{Proposal Song font: FandolSong}%
+  }%
+}
+\IfFontExistsTF{SimHei}{%
+  \setCJKfamilyfont{sf}{SimHei}[AutoFakeBold=2]%
+  \setCJKfamilyfont{nwafu@hei}{SimHei}[AutoFakeBold=2]%
+  \newCJKfontfamily\ProposalHei{SimHei}[AutoFakeBold=2]%
+  \typeout{Proposal Hei font: SimHei}%
+}{%
+  \IfFontExistsTF{黑体}{%
+    \setCJKfamilyfont{sf}{黑体}[AutoFakeBold=2]%
+    \setCJKfamilyfont{nwafu@hei}{黑体}[AutoFakeBold=2]%
+    \newCJKfontfamily\ProposalHei{黑体}[AutoFakeBold=2]%
+    \typeout{Proposal Hei font: Chinese Heiti}%
+  }{%
+    \setCJKfamilyfont{sf}{FandolHei-Regular.otf}[BoldFont=FandolHei-Bold.otf]%
+    \setCJKfamilyfont{nwafu@hei}{FandolHei-Regular.otf}[BoldFont=FandolHei-Bold.otf]%
+    \newCJKfontfamily\ProposalHei{FandolHei-Regular.otf}[BoldFont=FandolHei-Bold.otf]%
+    \typeout{Proposal Hei font: FandolHei}%
+  }%
+}
+\setCJKfamilyfont{tt}{FandolFang-Regular.otf}
+\setCJKfamilyfont{nwafu@kai}{FandolKai-Regular.otf}

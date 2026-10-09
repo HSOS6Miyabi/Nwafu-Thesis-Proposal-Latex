@@ -10,23 +10,8 @@
 \usepackage{booktabs}
 \usepackage{amsmath}
 
-% Open-source equivalents of nwafuthesis's Linux font configuration.
-% Use the xeCJK family names directly for consistent body and heading fonts.
-\setmainfont{XITS}[
-  Extension=.otf,
-  UprightFont=*-Regular,
-  BoldFont=*-Bold,
-  ItalicFont=*-Italic,
-  BoldItalicFont=*-BoldItalic
-]
-\setsansfont{Liberation Sans}
-\setmonofont{DejaVu Sans Mono}
-\setmathfont{XITSMath-Regular.otf}
-\setCJKfamilyfont{rm}{FandolSong-Regular.otf}[BoldFont=FandolSong-Bold.otf]
-\setCJKfamilyfont{sf}{FandolHei-Regular.otf}[BoldFont=FandolHei-Bold.otf]
-\setCJKfamilyfont{tt}{FandolFang-Regular.otf}
-\setCJKfamilyfont{nwafu@hei}{FandolHei-Regular.otf}[BoldFont=FandolHei-Bold.otf]
-\setCJKfamilyfont{nwafu@kai}{FandolKai-Regular.otf}
+% The cover and body share the automatically selected font families.
+\input{fonts/font-setup.tex}
 
 \IfFileExists{cover/information-private.tex}{%
   \input{cover/information-private.tex}%

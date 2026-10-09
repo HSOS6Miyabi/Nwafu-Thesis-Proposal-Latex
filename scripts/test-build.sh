@@ -22,9 +22,10 @@ mkdir -p "$out_dir"
 
 for variant in master-oneside master-twoside doctor-twoside; do
   work="$work_dir/$variant"
-  mkdir -p "$work/cover" "$work/contents" "$work/bib"
+  mkdir -p "$work/cover" "$work/contents" "$work/bib" "$work/fonts"
   cp "$root/main.tex" "$root/latexmkrc" "$work/"
   cp "$root/cover/cover.tex" "$example" "$work/cover/"
+  cp "$root/fonts/font-setup.tex" "$work/fonts/"
   cp "$root/contents/"*.tex "$work/contents/"
   cp "$root/bib/references.bib" "$work/bib/"
 
@@ -91,7 +92,7 @@ for variant in master-oneside master-twoside doctor-twoside; do
     exit 1
   }
 
-  python3 "$root/scripts/check-cover-layout.py" "$pdf"
+  python3 "$root/scripts/check-cover-layout.py" "$pdf" "$work/build.log"
   cp "$pdf" "$out_dir/$variant.pdf"
   echo "PASS: $variant ($page_count pages, TOC on page $toc_page) => $out_dir/$variant.pdf"
 done

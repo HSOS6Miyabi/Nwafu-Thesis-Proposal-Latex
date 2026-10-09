@@ -13,7 +13,7 @@
 
 ## 使用方法
 
-1. 安装 XeLaTeX、Biber、Noto Serif CJK SC、Noto Sans CJK SC、Tinos 等字体，以及 [nwafuthesis](https://ctan.org/pkg/nwafuthesis) v2.17 或更新版本。
+1. 安装 XeLaTeX、Biber、Fandol、XITS 等开源字体，以及 [nwafuthesis](https://ctan.org/pkg/nwafuthesis) v2.17 或更新版本。
 2. 修改 main.tex 中的 type=master / type=doctor，oneside / twoside 选项；封面上的学位称谓自动随之变化。
 3. 将 cover/information.example.tex 复制为 cover/information-private.tex，在本地填写个人信息。私人文件已被 .gitignore 忽略；中文、英文标题可以使用 LaTeX 双反斜杠换行。
 4. 修改 contents/ 里的章节，在 bib/references.bib 中维护参考文献。
@@ -23,6 +23,7 @@
 ## 文件结构
 
 - main.tex：入口文件、目录与正文的组合。
+- fonts/font-setup.tex：根据已安装字体自动选择宋体、黑体和西文字体。
 - cover/cover.tex：Word 风格封面布局。
 - cover/information.example.tex：公开示例封面信息。
 - contents/：正文示例。
@@ -30,7 +31,7 @@
 - scripts/test-build.sh：编译和页次测试。
 - scripts/check-cover-layout.py：PDF 字体、封面标题间距检查。
 
-本项目依赖外部 nwafuthesis 文档类，不包含该文档类、第三方字体及原始 Word 文件。正文样式来自 [nwafuthesis-l3](https://gitee.com/nwafu_nan/nwafuthesis-l3)，封面样式依据学校开题报告 Word 版式设计。字体采用与 nwafuthesis 的 Linux 默认字体体系对应的 XITS（西文）、FandolSong（正文宋体）、FandolHei（标题黑体）以及 FandolKai。它们是可公开使用的字体；与 Word 中的商业宋体、黑体、Times New Roman 字形可能略有差异。
+本项目依赖外部 nwafuthesis 文档类，不包含该文档类、第三方字体及原始 Word 文件。正文样式来自 [nwafuthesis-l3](https://gitee.com/nwafu_nan/nwafuthesis-l3)，封面样式依据学校开题报告 Word 版式设计。模板通过 XeLaTeX 的 `\IfFontExistsTF` 自动检查可用字体：西文优先使用 **Times New Roman**（否则 XITS）；中文宋体优先使用 **SimSun／宋体**（否则 FandolSong）；中文黑体优先使用 **SimHei／黑体**（否则 FandolHei）。各字体独立判断，封面与正文共用选择结果；数学字体与楷体分别保持 XITS Math 和 FandolKai。请在本机依法安装所需字体，无需修改模板，也无需将商业字体文件提交至仓库。编译后可在 `main.log` 中搜索 `Proposal ... font:` 查看实际选中的字体。
 
 新增代码按照本仓库 [MIT License](LICENSE) 发布，外部文档类遵循其原有许可。本模板并非学校官方发行版本，提交前请以学校当期要求为准。
 
@@ -44,7 +45,7 @@
 | `master-twoside.pdf` | 硕士双面 | 第 1 页封面、第 2 页空白、第 3 页目录 |
 | `doctor-twoside.pdf` | 博士双面 | 第 1 页封面、第 2 页空白、第 3 页目录 |
 
-CI 使用 TeX Live 2026（含 `nwafuthesis`）、XeLaTeX、Biber 和开源字体编译，检查学位称谓、公开占位信息、字体、封面标题间距、目录位置、正文内容及 PDF 文件有效性。所有检查通过后，在对应 Actions 运行页面的 **Artifacts** 区域上传 `nwafu-proposal-example-pdfs`，内含上述 3 个 PDF，保留 30 天。
+CI 使用 TeX Live 2026（含 `nwafuthesis`）、XeLaTeX、Biber 和开源字体编译，检查学位称谓、公开占位信息、实际选用及嵌入 PDF 的字体、封面标题间距、目录位置、正文内容及 PDF 文件有效性。所有检查通过后，在对应 Actions 运行页面的 **Artifacts** 区域上传 `nwafu-proposal-example-pdfs`，内含上述 3 个 PDF，保留 30 天。
 
 CI 始终使用 `cover/information.example.tex`，不会读取 `cover/information-private.tex`。为防止泄露真实个人信息，请不要把私人信息写入公开示例文件，也不要上传包含私人信息的预编译 PDF。
 

@@ -10,11 +10,35 @@ def capture(*command: str) -> str:
     return subprocess.run(command, capture_output=True, text=True, check=True).stdout
 
 
-def check(pdf_file: Path) -> None:
+def check(pdf_file: Path, build_log: Path) -> None:
     font_table = capture("pdffonts", str(pdf_file))
-    for font in ("FandolSong-Regular", "FandolHei-Regular", "XITS-Regular"):
-        if font not in font_table:
-            raise ValueError(f"{pdf_file.name}: missing embedded font {font}")
+    font_names = [line.split()[0] for line in font_table.splitlines()[2:] if line.strip()]
+    log = build_log.read_text(encoding="utf-8", errors="replace")
+    selected_fonts = (
+        ("Latin", {
+            "Times New Roman": ("TimesNewRoman", "Times-New-Roman"),
+            "XITS": ("XITS-Regular",),
+        }),
+        ("Song", {
+            "SimSun": ("SimSun",),
+            "Chinese Songti": ("Songti", "STSong", "SimSun", "宋体"),
+            "FandolSong": ("FandolSong",),
+        }),
+        ("Hei", {
+            "SimHei": ("SimHei",),
+            "Chinese Heiti": ("Heiti", "STHei", "SimHei", "黑体"),
+            "FandolHei": ("FandolHei",),
+        }),
+    )
+    for family, choices in selected_fonts:
+        actual = [choice for choice in choices
+                  if f"Proposal {family} font: {choice}" in log]
+        if len(actual) != 1:
+            raise ValueError(f"{pdf_file.name}: missing or ambiguous {family} font selection")
+        if not any(token in name for name in font_names for token in choices[actual[0]]):
+            raise ValueError(
+                f"{pdf_file.name}: requested {family} font {actual[0]} not embedded in PDF"
+            )
 
     html = capture("pdftotext", "-f", "1", "-l", "1", "-bbox", str(pdf_file), "-")
     root = ElementTree.fromstring(html)
@@ -40,9 +64,9 @@ def check(pdf_file: Path) -> None:
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        raise SystemExit("Usage: check-cover-layout.py <example.pdf>")
+    if len(sys.argv) != 3:
+        raise SystemExit("Usage: check-cover-layout.py <example.pdf> <build.log>")
     try:
-        check(Path(sys.argv[1]))
+        check(Path(sys.argv[1]), Path(sys.argv[2]))
     except (ValueError, OSError, subprocess.CalledProcessError) as error:
         raise SystemExit(str(error)) from error

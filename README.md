@@ -32,3 +32,19 @@
 本项目依赖外部 nwafuthesis 文档类，不包含该文档类、第三方字体及原始 Word 文件。正文样式来自 [nwafuthesis-l3](https://gitee.com/nwafu_nan/nwafuthesis-l3)，封面样式依据学校开题报告 Word 版式设计。不同操作系统的字体渲染可能存在细微差异。
 
 新增代码按照本仓库 [MIT License](LICENSE) 发布，外部文档类遵循其原有许可。本模板并非学校官方发行版本，提交前请以学校当期要求为准。
+
+## GitHub Actions 自动编译
+
+仓库使用 [LaTeX CI](.github/workflows/latex-ci.yml) 工作流，在向 `main` 分支推送、提交 Pull Request 或手动运行时，自动检查并编译以下公开示例：
+
+| 输出文件 | 版式 | 页次验证 |
+| --- | --- | --- |
+| `master-oneside.pdf` | 硕士单面 | 第 1 页封面、第 2 页目录 |
+| `master-twoside.pdf` | 硕士双面 | 第 1 页封面、第 2 页空白、第 3 页目录 |
+| `doctor-twoside.pdf` | 博士双面 | 第 1 页封面、第 2 页空白、第 3 页目录 |
+
+CI 使用 TeX Live 2026（含 `nwafuthesis`）、XeLaTeX、Biber 和开源字体编译，检查学位称谓、公开占位信息、目录位置、正文内容及 PDF 文件有效性。所有检查通过后，在对应 Actions 运行页面的 **Artifacts** 区域上传 `nwafu-proposal-example-pdfs`，内含上述 3 个 PDF，保留 30 天。
+
+CI 始终使用 `cover/information.example.tex`，不会读取 `cover/information-private.tex`。为防止泄露真实个人信息，请不要把私人信息写入公开示例文件，也不要上传包含私人信息的预编译 PDF。
+
+本地运行 `bash scripts/test-build.sh` 同样会把三个通过检查的 PDF 保存到 `dist/`，编译过程中产生的临时文件会自动清理。

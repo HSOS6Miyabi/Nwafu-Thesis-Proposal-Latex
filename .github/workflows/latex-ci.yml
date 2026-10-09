@@ -1,0 +1,96 @@
+name: LaTeX CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  compile-examples:
+    name: Compile and validate proposal PDFs
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Reject committed private metadata
+        shell: bash
+        run: |
+          set -euo pipefail
+          if git ls-files --cached -- cover/information-private.tex cover/information.tex | grep -q .; then
+            echo 'Private metadata must not be committed.' >&2
+            exit 1
+          fi
+
+      - name: Install fonts and PDF inspection tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            fonts-croscore fonts-dejavu-core fonts-liberation \
+            fonts-noto-cjk poppler-utils
+          fc-cache -f
+
+      - name: Install TeX Live 2026
+        uses: zauguin/install-texlive@v4
+        with:
+          texlive_version: 2026
+          cache_version: 1
+          packages: >-
+            scheme-basic
+            amsmath
+            biber
+            biblatex
+            biblatex-gb7714-2015
+            bigfoot
+            booktabs
+            caption
+            ctex
+            enumitem
+            etoolbox
+            fancyhdr
+            fandol
+            fontspec
+            footmisc
+            geometry
+            hyperref
+            l3kernel
+            l3packages
+            latexmk
+            ninecolors
+            ntheorem
+            nwafuthesis
+            pgf
+            tabularray
+            titlesec
+            unicode-math
+            xcolor
+            xetex
+            xstring
+            zhnumber
+
+      - name: Verify toolchain
+        run: |
+          set -euo pipefail
+          command -v xelatex
+          command -v biber
+          command -v latexmk
+          kpsewhich nwafuthesis.cls
+          fc-match 'Noto Serif CJK SC'
+          fc-match Tinos
+
+      - name: Compile and verify three public examples
+        run: bash scripts/test-build.sh
+
+      - name: Upload example PDFs
+        uses: actions/upload-artifact@v4
+        with:
+          name: nwafu-proposal-example-pdfs
+          path: dist/*.pdf
+          if-no-files-found: error
+          retention-days: 30

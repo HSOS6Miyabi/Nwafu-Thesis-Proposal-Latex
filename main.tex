@@ -10,14 +10,22 @@
 \usepackage{booktabs}
 \usepackage{amsmath}
 
-\setmainfont{Tinos}
+% Open-source equivalents of nwafuthesis's Linux font configuration.
+% Use the xeCJK family names directly for consistent body and heading fonts.
+\setmainfont{XITS}[
+  Extension=.otf,
+  UprightFont=*-Regular,
+  BoldFont=*-Bold,
+  ItalicFont=*-Italic,
+  BoldItalicFont=*-BoldItalic
+]
 \setsansfont{Liberation Sans}
 \setmonofont{DejaVu Sans Mono}
-\setmathfont{latinmodern-math.otf}
-\setCJKmainfont{Noto Serif CJK SC}
-\setCJKsansfont{Noto Sans CJK SC}
-\setCJKmonofont{Noto Sans Mono CJK SC}
-\setCJKfamilyfont{nwafu@hei}{Noto Sans CJK SC}
+\setmathfont{XITSMath-Regular.otf}
+\setCJKfamilyfont{rm}{FandolSong-Regular.otf}[BoldFont=FandolSong-Bold.otf]
+\setCJKfamilyfont{sf}{FandolHei-Regular.otf}[BoldFont=FandolHei-Bold.otf]
+\setCJKfamilyfont{tt}{FandolFang-Regular.otf}
+\setCJKfamilyfont{nwafu@hei}{FandolHei-Regular.otf}[BoldFont=FandolHei-Bold.otf]
 \setCJKfamilyfont{nwafu@kai}{FandolKai-Regular.otf}
 
 \IfFileExists{cover/information-private.tex}{%
@@ -29,8 +37,8 @@
 \nwafuset{
   style = {
     auto-make-cover = false,
-    font = none,                % 显式指定跨平台字体
-    cjk-font = none,            % 使用上方定义的中文字体
+    font = none,
+    cjk-font = none,
     bib-resource = {bib/references.bib},
   },
   info = {

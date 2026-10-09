@@ -28,8 +28,9 @@
 - contents/：正文示例。
 - bib/references.bib：引用示例。
 - scripts/test-build.sh：编译和页次测试。
+- scripts/check-cover-layout.py：PDF 字体、封面标题间距检查。
 
-本项目依赖外部 nwafuthesis 文档类，不包含该文档类、第三方字体及原始 Word 文件。正文样式来自 [nwafuthesis-l3](https://gitee.com/nwafu_nan/nwafuthesis-l3)，封面样式依据学校开题报告 Word 版式设计。不同操作系统的字体渲染可能存在细微差异。
+本项目依赖外部 nwafuthesis 文档类，不包含该文档类、第三方字体及原始 Word 文件。正文样式来自 [nwafuthesis-l3](https://gitee.com/nwafu_nan/nwafuthesis-l3)，封面样式依据学校开题报告 Word 版式设计。字体采用与 nwafuthesis 的 Linux 默认字体体系对应的 XITS（西文）、FandolSong（正文宋体）、FandolHei（标题黑体）以及 FandolKai。它们是可公开使用的字体；与 Word 中的商业宋体、黑体、Times New Roman 字形可能略有差异。
 
 新增代码按照本仓库 [MIT License](LICENSE) 发布，外部文档类遵循其原有许可。本模板并非学校官方发行版本，提交前请以学校当期要求为准。
 
@@ -43,7 +44,7 @@
 | `master-twoside.pdf` | 硕士双面 | 第 1 页封面、第 2 页空白、第 3 页目录 |
 | `doctor-twoside.pdf` | 博士双面 | 第 1 页封面、第 2 页空白、第 3 页目录 |
 
-CI 使用 TeX Live 2026（含 `nwafuthesis`）、XeLaTeX、Biber 和开源字体编译，检查学位称谓、公开占位信息、目录位置、正文内容及 PDF 文件有效性。所有检查通过后，在对应 Actions 运行页面的 **Artifacts** 区域上传 `nwafu-proposal-example-pdfs`，内含上述 3 个 PDF，保留 30 天。
+CI 使用 TeX Live 2026（含 `nwafuthesis`）、XeLaTeX、Biber 和开源字体编译，检查学位称谓、公开占位信息、字体、封面标题间距、目录位置、正文内容及 PDF 文件有效性。所有检查通过后，在对应 Actions 运行页面的 **Artifacts** 区域上传 `nwafu-proposal-example-pdfs`，内含上述 3 个 PDF，保留 30 天。
 
 CI 始终使用 `cover/information.example.tex`，不会读取 `cover/information-private.tex`。为防止泄露真实个人信息，请不要把私人信息写入公开示例文件，也不要上传包含私人信息的预编译 PDF。
 

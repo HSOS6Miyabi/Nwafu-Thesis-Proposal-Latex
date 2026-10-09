@@ -10,6 +10,8 @@ trap 'rm -rf "$work_dir"' EXIT
 command -v latexmk >/dev/null
 command -v pdftotext >/dev/null
 command -v pdfinfo >/dev/null
+command -v pdffonts >/dev/null
+command -v python3 >/dev/null
 
 # Only generic public example metadata is allowed in downloadable PDFs.
 example="$root/cover/information.example.tex"
@@ -89,6 +91,7 @@ for variant in master-oneside master-twoside doctor-twoside; do
     exit 1
   }
 
+  python3 "$root/scripts/check-cover-layout.py" "$pdf"
   cp "$pdf" "$out_dir/$variant.pdf"
   echo "PASS: $variant ($page_count pages, TOC on page $toc_page) => $out_dir/$variant.pdf"
 done

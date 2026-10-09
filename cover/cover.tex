@@ -1,8 +1,8 @@
 % 开题报告封面：A4 绝对定位，依据学校 Word 封面的位置与字号排版。
 % 采用 TikZ 仅影响封面；其余页面保持 nwafuthesis 文档类的页面设置。
-\newCJKfontfamily\ProposalSong{Noto Serif CJK SC}
-\newCJKfontfamily\ProposalHei{Noto Sans CJK SC}
-\newfontfamily\ProposalLatin{Tinos}
+\newCJKfontfamily\ProposalSong{FandolSong-Regular.otf}
+\newCJKfontfamily\ProposalHei{FandolHei-Regular.otf}
+\newcommand{\ProposalLatin}{\rmfamily}
 
 \newcommand{\ProposalCoverNode}[3]{%
   \node[anchor=center,inner sep=0pt] at
@@ -30,8 +30,8 @@
   \ProposalCoverNode{105}{114}{%
     {\ProposalHei\fontsize{22pt}{29pt}\selectfont
     \parbox[c]{177mm}{\centering\ProposalTitleZh}}}
-  \ProposalCoverNode{105}{141}{%
-    {\ProposalLatin\fontsize{22pt}{33pt}\selectfont
+  \ProposalCoverNode{105}{148}{%
+    {\ProposalLatin\fontsize{22pt}{30pt}\selectfont
     \parbox[c]{180mm}{\centering\ProposalTitleEn}}}
 
   \ProposalCoverField{180.2}{学\hfill 院（系、所）}{\ProposalCollege}

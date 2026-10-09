@@ -55,6 +55,7 @@ jobs:
             etoolbox
             fancyhdr
             fandol
+            xits
             fontspec
             footmisc
             geometry
@@ -81,8 +82,9 @@ jobs:
           command -v biber
           command -v latexmk
           kpsewhich nwafuthesis.cls
-          fc-match 'Noto Serif CJK SC'
-          fc-match Tinos
+          kpsewhich FandolSong-Regular.otf
+          kpsewhich FandolHei-Regular.otf
+          kpsewhich XITS-Regular.otf
 
       - name: Compile and verify three public examples
         run: bash scripts/test-build.sh

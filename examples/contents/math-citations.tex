@@ -1,0 +1,39 @@
+% 用例类型与格式依据压缩包 2 中的 nwafuthesis-l3 演示。
+\chapter{数学公式、定理与参考文献}
+\section{公式、编号与符号解释}
+使用 \verb|equation| 与 \verb|label| 自动编号公式。例如，式~\eqref{eq:demo-pythagoras} 表示勾股定理：
+\begin{equation}
+  a^2+b^2=c^2\label{eq:demo-pythagoras}
+\end{equation}
+\noindent 式中，$a$ 和 $b$ 为直角边长度；$c$ 为斜边长度。
+
+多行公式可以使用 \texttt{aligned}：
+\begin{equation}\label{eq:demo-aligned}
+  \begin{aligned}
+    S &= \sum_{i=1}^n x_i,\\
+    \bar{x} &= \frac{S}{n}.
+  \end{aligned}
+\end{equation}
+
+\section{定理与证明环境}
+\begin{definition}[算术平均值]
+对于 $n$ 个实数 $x_1,\dots,x_n$，算术平均值定义为 $\bar{x}=\frac{1}{n}\sum_{i=1}^n x_i$。
+\end{definition}
+\begin{theorem}[非负数的平方]
+对任意实数 $x$，都有 $x^2\geq 0$。
+\end{theorem}
+\begin{proof}
+实数与自身的乘积非负，所以结论成立。
+\end{proof}
+
+模板还提供 \texttt{axiom}、\texttt{corollary}、\texttt{lemma}、\texttt{example} 等数学环境，可以参照上述环境替换名称使用。
+
+\section{参考文献与引用方式}
+参考文献数据库通过 \texttt{bib-resource} 注册，正文按需使用以下命令：
+\begin{itemize}
+  \item 普通引用：\verb|\cite{latexproject}|，效果如\cite{latexproject}。
+  \item 叙述性引用：\verb|\textcite{latexproject}|，效果如\textcite{latexproject}。
+  \item 带定位说明的引用：\verb|\parencite[sec. 1]{latexproject}|，效果如\parencite[sec. 1]{latexproject}。
+  \item 多篇文献：\verb|\cite{latexproject,ctan}|，效果如\cite{latexproject,ctan}。
+\end{itemize}
+最后通过 \verb|\printbibliography| 输出文末参考文献，交给 Biber 自动处理；图、表、公式引用则使用 \verb|\ref| 或 \verb|\eqref|，不要手动写编号。

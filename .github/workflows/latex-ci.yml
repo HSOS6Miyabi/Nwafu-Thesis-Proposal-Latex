@@ -67,6 +67,9 @@ jobs:
             ntheorem
             nwafuthesis
             pgf
+            mwe
+            csvsimple
+            siunitx
             tabularray
             titlesec
             unicode-math
@@ -88,6 +91,9 @@ jobs:
 
       - name: Compile and verify three public examples
         run: bash scripts/test-build.sh
+
+      - name: Compile and validate formatting manual
+        run: bash scripts/test-examples.sh
 
       - name: Upload example PDFs
         uses: actions/upload-artifact@v4

@@ -1,0 +1,117 @@
+% 用例类型与格式依据压缩包 2 中的 nwafuthesis-l3 演示。
+\chapter{插图与表格}
+
+\section{插图、题注与交叉引用}
+图形可通过 \verb|\includegraphics| 引入 PDF、PNG、JPG 等文件，也可以用 Ti\textit{k}Z 绘制矢量图。
+图~\ref{fig:demo-image} 是内置的示例图像；在正式报告中用自己的图片路径替换 \verb|example-image-a|。
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=.55\textwidth]{example-image-a}
+  \caption{单幅插图及中文题注示例}
+  \label{fig:demo-image}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \begin{subfigure}[b]{.43\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{example-image-a}
+    \caption{第一幅子图}\label{fig:demo-sub-a}
+  \end{subfigure}\qquad
+  \begin{subfigure}[b]{.43\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{example-image-b}
+    \caption{第二幅子图}\label{fig:demo-sub-b}
+  \end{subfigure}
+  \caption{利用 subcaption 排版子图}
+  \label{fig:demo-subfigures}
+\end{figure}
+
+可以分别引用图~\ref{fig:demo-sub-a} 与图~\ref{fig:demo-sub-b}，或引用整组图~\ref{fig:demo-subfigures}。
+
+\begin{figure}[htbp]
+  \centering
+  \begin{tikzpicture}[>=stealth,thick]
+    \node[draw,rounded corners] (data) at (0,0) {准备数据};
+    \node[draw,rounded corners] (method) at (4,0) {研究方法};
+    \node[draw,rounded corners] (evaluation) at (8,0) {结果评估};
+    \draw[->] (data) -- (method);
+    \draw[->] (method) -- (evaluation);
+  \end{tikzpicture}
+  \caption{使用 Ti\textit{k}Z 绘制技术路线示意图}
+  \label{fig:demo-tikz}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=.50\textwidth]{example-image-b}
+  \bicaption{双语图片题注示例}{Example of a bilingual figure caption}
+  \label{fig:demo-bilingual-figure}
+\end{figure}
+
+\section{三线表、双语表题与交叉引用}
+表~\ref{tab:demo-booktabs} 使用 \texttt{booktabs} 的三线表命令，表~\ref{tab:demo-bilingual} 演示双语题注。
+\begin{table}[htbp]
+  \centering
+  \caption{三线表排版示例}
+  \label{tab:demo-booktabs}
+  \begin{tabular}{lcc}
+    \toprule
+    项目 & 方案甲 & 方案乙 \\
+    \midrule
+    指标一 & 0.85 & 0.88 \\
+    指标二 & 0.91 & 0.93 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+  \centering
+  \bicaption{双语表格题注示例}{Example of a bilingual table caption}
+  \label{tab:demo-bilingual}
+  \begin{tabular}{lcc}
+    \toprule
+    类别 & 数量 & 比例（\%）\\
+    \midrule
+    A & 40 & 40\\
+    B & 60 & 60\\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\section{tabularray 表格与跨页长表格}
+\texttt{tblr}、\texttt{talltblr} 与 \texttt{longtblr} 的完整代码示例收录在 \texttt{examples/README.md} 中，供编写正式报告时复制修改。
+
+\section{CSV 数据生成表格}
+压缩包 2 使用 \texttt{csvsimple-l3} 读取外部 CSV 数据。下表直接由 \verb|examples/data/metrics.csv| 生成。
+\begin{table}[htbp]
+  \centering
+  \caption{从 CSV 数据自动生成表格}
+  \label{tab:demo-csv}
+  \csvreader[
+    tabular=lrr,
+    table head=\toprule 项目 & 方案甲 & 方案乙 \\\midrule,
+    late after last line=\\\bottomrule
+  ]{examples/data/metrics.csv}{} {\csvlinetotablerow}
+\end{table}
+
+\section{横向页面与数值单位}
+当图表宽度超过正文宽度时，可使用 \verb|landscape| 环境。横向页示例见下表。
+\begin{landscape}
+\begin{table}[htbp]
+  \centering
+  \caption{横向页面中的宽表格示例}
+  \label{tab:demo-landscape}
+  \begin{tabular}{lcccccc}
+    \toprule
+    名称 & 变量一 & 变量二 & 变量三 & 变量四 & 变量五 & 变量六 \\
+    \midrule
+    A & 1 & 2 & 3 & 4 & 5 & 6 \\
+    B & 2 & 3 & 4 & 5 & 6 & 7 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+\end{landscape}
+
+数值及单位使用 \texttt{siunitx}：旋转角为 \ang{90}，采样距离为 \SI{1.5}{\metre}，测量结果为 \num{2.35e3}。

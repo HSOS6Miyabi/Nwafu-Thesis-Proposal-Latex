@@ -1,0 +1,32 @@
+% !TeX program = xelatex
+% 独立排版用例手册；不属于开题报告的六章正文。
+\documentclass[type=master,oneside]{nwafuthesis}
+\usepackage{tikz}
+\usepackage{booktabs}
+\usepackage{mwe} % TeX Live 提供的无个人信息示例图片
+\usepackage{subcaption}
+\usepackage{lscape}
+\usepackage{siunitx}
+\usepackage{csvsimple-l3}
+\usepackage{amsmath}
+\input{fonts/font-setup.tex}
+\nwafuset{
+  style = {
+    auto-make-cover = false,
+    font = none,
+    cjk-font = none,
+    bib-resource = {examples/bib/references.bib},
+  },
+  info = {
+    ptype = academic,
+    title = {常用排版用例},
+    title* = {Typesetting Examples},
+  },
+}
+\begin{document}
+\mainmatter
+\input{examples/contents/figures-tables.tex}
+\input{examples/contents/math-citations.tex}
+\bibmatter*
+\printbibliography
+\end{document}

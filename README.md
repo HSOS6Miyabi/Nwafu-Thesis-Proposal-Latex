@@ -40,6 +40,7 @@
 - cover/cover.tex：Word 风格封面布局。
 - cover/information.example.tex：公开示例封面信息。
 - contents/：按开题报告目录组织的六章正文示例，每章一个独立文件。
+- examples/：基于压缩包 2 的独立排版用例手册（插图、子图、三线表、双语图表题注、CSV、数学公式、文献引用等）。
 - bib/references.bib：引用示例。
 - scripts/test-build.sh：编译和页次测试。
 - scripts/check-structure.py：验证六章正文、节与小节的顺序及 PDF 目录对应内容。
@@ -48,6 +49,12 @@
 本项目依赖外部 nwafuthesis 文档类，不包含该文档类、第三方字体及原始 Word 文件。正文样式来自 [nwafuthesis-l3](https://gitee.com/nwafu_nan/nwafuthesis-l3)，封面样式依据学校开题报告 Word 版式设计。模板通过 XeLaTeX 的 `\IfFontExistsTF` 自动检查可用字体：西文优先使用 **Times New Roman**（否则 XITS）；中文宋体优先使用 **SimSun／宋体**（否则 FandolSong）；中文黑体优先使用 **SimHei／黑体**（否则 FandolHei）。各字体独立判断，封面与正文共用选择结果；数学字体与楷体分别保持 XITS Math 和 FandolKai。请在本机依法安装所需字体，无需修改模板，也无需将商业字体文件提交至仓库。编译后可在 `main.log` 中搜索 `Proposal ... font:` 查看实际选中的字体。
 
 新增代码按照本仓库 [MIT License](LICENSE) 发布，外部文档类遵循其原有许可。本模板并非学校官方发行版本，提交前请以学校当期要求为准。
+
+## 表格、插图、公式与引用的用法示例
+
+六章开题报告正文保持指定目录结构。**完整的可编译排版示例独立存放在 [examples/](examples/README.md)**，包括插图、子图、TikZ 技术路线图、单语和双语题注、三线表、CSV 自动制表、宽表格、数学公式、定理与证明、交叉引用、参考文献引用等；`tabularray` 的合并单元格、跨页长表及表注用例也在该手册中提供。示例沿用压缩包 2（nwafuthesis-l3）的用例类型和排版方法，采用通用数据且不包含个人身份信息。
+
+从仓库根目录运行 `latexmk -xelatex examples/main.tex`，或者运行 `bash scripts/test-examples.sh` 生成 `dist/usage-examples.pdf`。此使用说明是独立文档，不会向正式开题报告添加章节、摘要或其他页面。
 
 ## GitHub Actions 自动编译
 
@@ -58,9 +65,10 @@
 | `master-oneside.pdf` | 硕士单面 | 第 1 页封面、第 2 页目录 |
 | `master-twoside.pdf` | 硕士双面 | 第 1 页封面、第 2 页空白、第 3 页目录 |
 | `doctor-twoside.pdf` | 博士双面 | 第 1 页封面、第 2 页空白、第 3 页目录 |
+| `usage-examples.pdf` | 独立排版使用说明 | 插图、图表、公式、引用等用例 |
 
-CI 使用 TeX Live 2026（含 `nwafuthesis`）、XeLaTeX、Biber 和开源字体编译，检查学位称谓、公开占位信息、实际选用及嵌入 PDF 的字体、封面标题间距、目录位置、六章及各级标题、正文内容及 PDF 文件有效性。所有检查通过后，在对应 Actions 运行页面的 **Artifacts** 区域上传 `nwafu-proposal-example-pdfs`，内含上述 3 个 PDF，保留 30 天。
+CI 使用 TeX Live 2026（含 `nwafuthesis`）、XeLaTeX、Biber 和开源字体编译，检查学位称谓、公开占位信息、实际选用及嵌入 PDF 的字体、封面标题间距、目录位置、六章及各级标题、正文内容及 PDF 文件有效性。所有检查通过后，在对应 Actions 运行页面的 **Artifacts** 区域上传 `nwafu-proposal-example-pdfs`，内含上述 4 个 PDF，保留 30 天。
 
 CI 始终使用 `cover/information.example.tex`，不会读取 `cover/information-private.tex`。为防止泄露真实个人信息，请不要把私人信息写入公开示例文件，也不要上传包含私人信息的预编译 PDF。
 
-本地运行 `bash scripts/test-build.sh` 同样会把三个通过检查的 PDF 保存到 `dist/`，编译过程中产生的临时文件会自动清理。
+本地运行 `bash scripts/test-build.sh` 同样会把三个通过检查的开题报告 PDF 保存到 `dist/`，编译过程中产生的临时文件会自动清理。

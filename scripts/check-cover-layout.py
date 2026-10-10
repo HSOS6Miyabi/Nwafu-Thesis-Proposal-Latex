@@ -89,7 +89,7 @@ def check(pdf_file: Path, build_log: Path, expected_english_lines: int = 3) -> N
     print(f"PASS: {pdf_file.name} fonts and cover typography, "
           f"English line stretch {selected_stretch:g}, "
           f"line spacing {chinese_leading:.1f}pt / "
-          f"{english_leadings[0]:.1f}pt, gaps 
+          f"{english_leadings[0]:.1f}pt, gaps "
           f"{between_titles:.1f}pt / {before_fields:.1f}pt")
 
 

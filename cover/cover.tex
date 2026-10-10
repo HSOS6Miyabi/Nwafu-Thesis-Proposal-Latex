@@ -27,18 +27,23 @@
 
   % Word source: 22 pt titles with 1.5 multiple line spacing.
   % Set the local font baseline to 22 pt so linespread=1.5 applies once.
-  \ProposalCoverNode{105}{114}{%
-    {\ProposalHei%
-      \parbox[c]{177mm}{%
-        \centering\setlength{\parskip}{0pt}%
-        \linespread{1.5}\fontsize{22pt}{22pt}\selectfont
-        \ProposalTitleZh}}}
-  \ProposalCoverNode{105}{141}{%
-    {\ProposalLatin%
-      \parbox[c]{180mm}{%
-        \centering\setlength{\parskip}{0pt}%
-        \linespread{1.5}\fontsize{22pt}{22pt}\selectfont
-        \ProposalTitleEn}}}
+  % Center the Chinese title at its Word-reference position.
+  % Place the English title relative to the Chinese text box, so the
+  % separation stays consistent when the Chinese title has multiple lines.
+  \node[anchor=center,inner sep=0pt] (proposal-title-zh) at
+    ([xshift=105mm,yshift=-114mm]current page.north west) {%
+      {\ProposalHei
+       \parbox[c]{177mm}{%
+         \centering\setlength{\parskip}{0pt}%
+         \linespread{1.5}\fontsize{22pt}{22pt}\selectfont
+         \ProposalTitleZh}}};
+  \node[anchor=north,inner sep=0pt] (proposal-title-en) at
+    ([yshift=-9.5mm]proposal-title-zh.south) {%
+      {\ProposalLatin
+       \parbox[c]{180mm}{%
+         \centering\setlength{\parskip}{0pt}%
+         \linespread{1.5}\fontsize{22pt}{22pt}\selectfont
+         \ProposalTitleEn}}};
 
   \ProposalCoverField{180.2}{学\hfill 院（系、所）}{\ProposalCollege}
   \ProposalCoverField{190.9}{一级学科／专业领域}{\ProposalMajor}

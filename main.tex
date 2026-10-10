@@ -13,6 +13,15 @@
 % The cover and body share the automatically selected font families.
 \input{fonts/font-setup.tex}
 
+% ======================= 封面个人信息填写 =======================
+% 1. 复制 cover/information.example.tex 为 cover/information-private.tex。
+% 2. 仅在 cover/information-private.tex 中填写年级、中英文论文标题、
+%    学院、专业、姓名、学号、指导教师、开题小组成员和日期。
+% 3. information-private.tex 已被 .gitignore 忽略；不要把真实个人信息
+%    写入 main.tex 或 information.example.tex，也不要提交含个人信息的 PDF。
+% 未创建私人文件时，使用 information.example.tex 的公开占位数据。
+% ==============================================================
+
 \IfFileExists{cover/information-private.tex}{%
   \input{cover/information-private.tex}%
 }{%

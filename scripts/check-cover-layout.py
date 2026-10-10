@@ -73,7 +73,7 @@ def check(pdf_file: Path, build_log: Path) -> None:
 
     between_titles = min(w[1] for w in english) - max(w[2] for w in chinese)
     before_fields = fields[0][1] - max(w[2] for w in english)
-    if between_titles < 8 or before_fields < 8:
+    if not 20 <= between_titles <= 40 or before_fields < 20:
         raise ValueError(
             f"{pdf_file.name}: title areas too close "
             f"(Chinese/English gap {between_titles:.1f}pt; English/fields gap {before_fields:.1f}pt)"

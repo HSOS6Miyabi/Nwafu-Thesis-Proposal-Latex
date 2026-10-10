@@ -53,7 +53,7 @@ def check(pdf_file: Path, build_log: Path) -> None:
     if len(chinese) != 2 or len(english) != 8 or len(fields) != 1:
         raise ValueError(f"{pdf_file.name}: expected public title or field is missing")
 
-    # Validate actual baseline distances, not only that the two blocks do not overlap.
+    # Check local 22 pt, 1.5x line spacing and the separation of title blocks.
     chinese_tops = sorted(word[1] for word in chinese)
     english_tops = sorted({word[1] for word in english})
     if len(english_tops) != 3:
@@ -62,8 +62,8 @@ def check(pdf_file: Path, build_log: Path) -> None:
     english_leadings = [
         english_tops[i + 1] - english_tops[i] for i in range(2)
     ]
-    if not 27 <= chinese_leading <= 32 or any(
-        not 28 <= leading <= 32 for leading in english_leadings
+    if not 32 <= chinese_leading <= 34 or any(
+        not 32 <= leading <= 34 for leading in english_leadings
     ):
         raise ValueError(
             f"{pdf_file.name}: incorrect cover title line spacing "

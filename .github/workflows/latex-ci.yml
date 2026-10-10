@@ -92,6 +92,9 @@ jobs:
       - name: Compile and verify three public examples
         run: bash scripts/test-build.sh
 
+      - name: Validate extended English title spacing
+        run: bash scripts/test-cover-extended.sh
+
       - name: Compile and validate formatting manual
         run: bash scripts/test-examples.sh
 

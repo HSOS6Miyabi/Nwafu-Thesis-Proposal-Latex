@@ -1,6 +1,20 @@
 % 开题报告封面：A4 绝对定位，依据学校 Word 封面的位置与字号排版。
 % 采用 TikZ 仅影响封面；字体由 fonts/font-setup.tex 统一选择。
 \newcommand{\ProposalLatin}{\rmfamily}
+\newsavebox{\ProposalEnglishNormalBox}
+\newsavebox{\ProposalEnglishModerateBox}
+\newsavebox{\ProposalEnglishCompactBox}
+\newdimen\ProposalEnglishAvailableHeight
+\newdimen\ProposalEnglishTitleTopY
+\newdimen\ProposalEnglishTitleBottomLimitY
+\newcommand{\ProposalPrepareEnglishTitle}[2]{%
+  \sbox{#1}{{\ProposalLatin
+    \parbox[c]{180mm}{%
+      \centering\setlength{\parskip}{0pt}%
+      \linespread{#2}\fontsize{22pt}{22pt}\selectfont
+      \ProposalTitleEn}}}%
+}
+
 
 \newcommand{\ProposalCoverNode}[3]{%
   \node[anchor=center,inner sep=0pt] at
@@ -16,6 +30,9 @@
 }
 \begin{titlepage}
 \thispagestyle{empty}
+\ProposalPrepareEnglishTitle{\ProposalEnglishNormalBox}{1.5}%
+\ProposalPrepareEnglishTitle{\ProposalEnglishModerateBox}{1.35}%
+\ProposalPrepareEnglishTitle{\ProposalEnglishCompactBox}{1.2}%
 \begin{tikzpicture}[remember picture,overlay]
   \ProposalCoverNode{105}{53}{%
     {\ProposalSong\fontsize{18pt}{25pt}\selectfont 西北农林科技大学}}
@@ -37,13 +54,33 @@
          \centering\setlength{\parskip}{0pt}%
          \linespread{1.5}\fontsize{22pt}{22pt}\selectfont
          \ProposalTitleZh}}};
+  % Preserve the 9.5 mm space between title groups. The English title
+  % may use tighter internal leading only when necessary to leave room
+  % above the first metadata field. The safe lower boundary is at 169 mm.
+  \pgfextracty{\ProposalEnglishTitleTopY}{\pgfpointanchor{proposal-title-zh}{south}}
+  \advance\ProposalEnglishTitleTopY by -9.5mm
+  \pgfextracty{\ProposalEnglishTitleBottomLimitY}{\pgfpointanchor{current page}{north west}}
+  \advance\ProposalEnglishTitleBottomLimitY by -169mm
+  \ProposalEnglishAvailableHeight=\dimexpr
+    \ProposalEnglishTitleTopY-\ProposalEnglishTitleBottomLimitY\relax
+
+  \def\ProposalSelectedEnglishBox{\ProposalEnglishNormalBox}%
+  \def\ProposalEnglishStretch{1.5}%
+  \ifdim\dimexpr\ht\ProposalEnglishNormalBox+\dp\ProposalEnglishNormalBox\relax>\ProposalEnglishAvailableHeight
+    \def\ProposalSelectedEnglishBox{\ProposalEnglishModerateBox}%
+    \def\ProposalEnglishStretch{1.35}%
+    \ifdim\dimexpr\ht\ProposalEnglishModerateBox+\dp\ProposalEnglishModerateBox\relax>\ProposalEnglishAvailableHeight
+      \def\ProposalSelectedEnglishBox{\ProposalEnglishCompactBox}%
+      \def\ProposalEnglishStretch{1.2}%
+      \ifdim\dimexpr\ht\ProposalEnglishCompactBox+\dp\ProposalEnglishCompactBox\relax>\ProposalEnglishAvailableHeight
+        \PackageError{nwafu-proposal}{English title exceeds available cover height}%
+          {Shorten the English title; the Chinese-English separation is fixed.}%
+      \fi
+    \fi
+  \fi
+  \typeout{Proposal English title line stretch: \ProposalEnglishStretch}%
   \node[anchor=north,inner sep=0pt] (proposal-title-en) at
-    ([yshift=-9.5mm]proposal-title-zh.south) {%
-      {\ProposalLatin
-       \parbox[c]{180mm}{%
-         \centering\setlength{\parskip}{0pt}%
-         \linespread{1.5}\fontsize{22pt}{22pt}\selectfont
-         \ProposalTitleEn}}};
+    ([yshift=-9.5mm]proposal-title-zh.south) {\usebox{\ProposalSelectedEnglishBox}};
 
   \ProposalCoverField{180.2}{学\hfill 院（系、所）}{\ProposalCollege}
   \ProposalCoverField{190.9}{一级学科／专业领域}{\ProposalMajor}

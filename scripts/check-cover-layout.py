@@ -2,6 +2,7 @@
 """Check example PDF fonts and ensure cover title groups do not intersect."""
 from pathlib import Path
 import subprocess
+import re
 import sys
 from xml.etree import ElementTree
 
@@ -10,7 +11,7 @@ def capture(*command: str) -> str:
     return subprocess.run(command, capture_output=True, text=True, check=True).stdout
 
 
-def check(pdf_file: Path, build_log: Path) -> None:
+def check(pdf_file: Path, build_log: Path, expected_english_lines: int = 3) -> None:
     font_table = capture("pdffonts", str(pdf_file))
     font_names = [line.split()[0] for line in font_table.splitlines()[2:] if line.strip()]
     log = build_log.read_text(encoding="utf-8", errors="replace")
@@ -47,23 +48,30 @@ def check(pdf_file: Path, build_log: Path) -> None:
     chinese = [w for w in words if w[0] in {
         "开题报告中文标题第一行", "开题报告中文标题第二行"}]
     english = [w for w in words if w[0] in {
-        "English", "Title", "of", "the", "Research", "Proposal", "Goes", "Here"}]
+        "English", "Title", "of", "the", "Research", "Proposal", "Goes", "Here", "Extended", "Example"}]
     fields = [w for w in words if w[0] == "学院（系、所）名称"]
 
-    if len(chinese) != 2 or len(english) != 8 or len(fields) != 1:
+    if len(chinese) != 2 or len(english) != (8 if expected_english_lines == 3 else 10) or len(fields) != 1:
         raise ValueError(f"{pdf_file.name}: expected public title or field is missing")
 
     # Check local 22 pt, 1.5x line spacing and the separation of title blocks.
     chinese_tops = sorted(word[1] for word in chinese)
     english_tops = sorted({word[1] for word in english})
-    if len(english_tops) != 3:
-        raise ValueError(f"{pdf_file.name}: expected three separate English title lines")
+    if len(english_tops) != expected_english_lines:
+        raise ValueError(f"{pdf_file.name}: expected {expected_english_lines} English title lines")
     chinese_leading = chinese_tops[1] - chinese_tops[0]
     english_leadings = [
-        english_tops[i + 1] - english_tops[i] for i in range(2)
+        english_tops[i + 1] - english_tops[i] for i in range(expected_english_lines - 1)
     ]
+    selected = set(re.findall(
+        r"Proposal English title line stretch: (1\.5|1\.35|1\.2)", log
+    ))
+    if len(selected) != 1:
+        raise ValueError(f"{pdf_file.name}: ambiguous English line-stretch selection")
+    selected_stretch = float(next(iter(selected)))
+    expected_leading = 22 * selected_stretch
     if not 32 <= chinese_leading <= 34 or any(
-        not 32 <= leading <= 34 for leading in english_leadings
+        abs(leading - expected_leading) > 1.5 for leading in english_leadings
     ):
         raise ValueError(
             f"{pdf_file.name}: incorrect cover title line spacing "
@@ -79,15 +87,16 @@ def check(pdf_file: Path, build_log: Path) -> None:
             f"(Chinese/English gap {between_titles:.1f}pt; English/fields gap {before_fields:.1f}pt)"
         )
     print(f"PASS: {pdf_file.name} fonts and cover typography, "
+          f"English line stretch {selected_stretch:g}, "
           f"line spacing {chinese_leading:.1f}pt / "
-          f"{english_leadings[0]:.1f}pt, gaps "
+          f"{english_leadings[0]:.1f}pt, gaps 
           f"{between_titles:.1f}pt / {before_fields:.1f}pt")
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 3:
-        raise SystemExit("Usage: check-cover-layout.py <example.pdf> <build.log>")
+    if len(sys.argv) not in (3, 4):
+        raise SystemExit("Usage: check-cover-layout.py <example.pdf> <build.log> [English lines]")
     try:
-        check(Path(sys.argv[1]), Path(sys.argv[2]))
+        check(Path(sys.argv[1]), Path(sys.argv[2]), int(sys.argv[3]) if len(sys.argv) == 4 else 3)
     except (ValueError, OSError, subprocess.CalledProcessError) as error:
         raise SystemExit(str(error)) from error

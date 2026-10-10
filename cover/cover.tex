@@ -25,12 +25,20 @@
   \ProposalCoverNode{105}{76}{%
     {\ProposalSong\fontsize{18pt}{25pt}\selectfont 开题报告}}
 
+  % Keep the title line spacing local to the cover. nwafuthesis's body
+  % line-stretch must not multiply these explicit font baselines.
   \ProposalCoverNode{105}{114}{%
-    {\ProposalHei\fontsize{22pt}{29pt}\selectfont
-    \parbox[c]{177mm}{\centering\ProposalTitleZh}}}
-  \ProposalCoverNode{105}{148}{%
-    {\ProposalLatin\fontsize{22pt}{30pt}\selectfont
-    \parbox[c]{180mm}{\centering\ProposalTitleEn}}}
+    {\ProposalHei%
+      \parbox[c]{177mm}{%
+        \centering\setlength{\parskip}{0pt}%
+        \linespread{1}\fontsize{22pt}{29pt}\selectfont
+        \ProposalTitleZh}}}
+  \ProposalCoverNode{105}{141}{%
+    {\ProposalLatin%
+      \parbox[c]{180mm}{%
+        \centering\setlength{\parskip}{0pt}%
+        \linespread{1}\fontsize{22pt}{30pt}\selectfont
+        \ProposalTitleEn}}}
 
   \ProposalCoverField{180.2}{学\hfill 院（系、所）}{\ProposalCollege}
   \ProposalCoverField{190.9}{一级学科／专业领域}{\ProposalMajor}

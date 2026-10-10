@@ -52,6 +52,25 @@ def check(pdf_file: Path, build_log: Path) -> None:
 
     if len(chinese) != 2 or len(english) != 8 or len(fields) != 1:
         raise ValueError(f"{pdf_file.name}: expected public title or field is missing")
+
+    # Validate actual baseline distances, not only that the two blocks do not overlap.
+    chinese_tops = sorted(word[1] for word in chinese)
+    english_tops = sorted({word[1] for word in english})
+    if len(english_tops) != 3:
+        raise ValueError(f"{pdf_file.name}: expected three separate English title lines")
+    chinese_leading = chinese_tops[1] - chinese_tops[0]
+    english_leadings = [
+        english_tops[i + 1] - english_tops[i] for i in range(2)
+    ]
+    if not 27 <= chinese_leading <= 32 or any(
+        not 28 <= leading <= 32 for leading in english_leadings
+    ):
+        raise ValueError(
+            f"{pdf_file.name}: incorrect cover title line spacing "
+            f"(Chinese {chinese_leading:.1f}pt; "
+            f"English {', '.join(f'{x:.1f}' for x in english_leadings)}pt)"
+        )
+
     between_titles = min(w[1] for w in english) - max(w[2] for w in chinese)
     before_fields = fields[0][1] - max(w[2] for w in english)
     if between_titles < 8 or before_fields < 8:
@@ -59,7 +78,9 @@ def check(pdf_file: Path, build_log: Path) -> None:
             f"{pdf_file.name}: title areas too close "
             f"(Chinese/English gap {between_titles:.1f}pt; English/fields gap {before_fields:.1f}pt)"
         )
-    print(f"PASS: {pdf_file.name} fonts and cover typography, gaps "
+    print(f"PASS: {pdf_file.name} fonts and cover typography, "
+          f"line spacing {chinese_leading:.1f}pt / "
+          f"{english_leadings[0]:.1f}pt, gaps "
           f"{between_titles:.1f}pt / {before_fields:.1f}pt")
 
 

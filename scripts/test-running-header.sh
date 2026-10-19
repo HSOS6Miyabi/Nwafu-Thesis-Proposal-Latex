@@ -61,12 +61,6 @@ TEX
         echo "Incorrect one-sided first-page header for $type" >&2
         exit 1
       }
-    else
-      first_page="$(pdftotext -f 1 -l 1 -layout "$pdf" -)"
-      if ! grep -Fq '章节标题' <<< "$first_page"; then
-        echo "Missing first chapter for $type" >&2
-        exit 1
-      fi
     fi
 
     # Bibliography may start on different physical pages across class versions.

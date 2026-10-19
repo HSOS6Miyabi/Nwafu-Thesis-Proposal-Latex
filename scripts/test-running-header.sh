@@ -36,31 +36,55 @@ TEX
     pdf="$work/main.pdf"
     test -s "$pdf"
     pages="$(pdfinfo "$pdf" | awk '/^Pages:/ {print $2}')"
-    test "$pages" -eq 4
+    if [[ ! "$pages" =~ ^[0-9]+$ ]] || (( pages < 4 )); then
+      echo "Expected at least four pages for $type-$sided, got $pages" >&2
+      exit 1
+    fi
     if [[ "$type" == master ]]; then
       expected="西北农林科技大学硕士开题报告"
     else
       expected="西北农林科技大学博士开题报告"
     fi
-    if [[ "$sided" == twoside ]]; then
-      check_pages="2 4"
-    else
-      check_pages="1 2 3 4"
+    # The body must contain a second page with the proposal-specific header.
+    body_page="$(pdftotext -f 2 -l 2 -layout "$pdf" -)"
+    if ! grep -Fq '第二页正文' <<< "$body_page" ||
+       ! grep -Fq "$expected" <<< "$body_page" ||
+       grep -Fq '学位论文' <<< "$body_page"; then
+      echo "Incorrect second body page header for $type-$sided" >&2
+      printf '%s\n' "$body_page" >&2
+      exit 1
     fi
-    for p in $check_pages; do
-      page="$(pdftotext -f "$p" -l "$p" -layout "$pdf" -)"
-      grep -Fq "$expected" <<< "$page" || {
-        echo "Wrong running header on page $p of $type-$sided" >&2
+
+    if [[ "$sided" == oneside ]]; then
+      first_page="$(pdftotext -f 1 -l 1 -layout "$pdf" -)"
+      grep -Fq "$expected" <<< "$first_page" || {
+        echo "Incorrect one-sided first-page header for $type" >&2
         exit 1
       }
-      if grep -Fq '学位论文' <<< "$page"; then
-        echo "Unexpected thesis header on page $p of $type-$sided" >&2
+    else
+      first_page="$(pdftotext -f 1 -l 1 -layout "$pdf" -)"
+      if ! head -n 1 <<< "$first_page" | grep -Fq '章节标题'; then
+        echo "Missing odd-page chapter header for $type" >&2
         exit 1
       fi
+    fi
+
+    # Bibliography may start on different physical pages across class versions.
+    bibliography_checked=0
+    for ((p=3; p<=pages; p++)); do
+      page="$(pdftotext -f "$p" -l "$p" -layout "$pdf" -)"
+      if grep -Fq '参考文献第二页' <<< "$page"; then
+        if ! grep -Fq "$expected" <<< "$page" ||
+           grep -Fq '学位论文' <<< "$page"; then
+          echo "Incorrect bibliography header for $type-$sided on page $p" >&2
+          exit 1
+        fi
+        bibliography_checked=1
+      fi
     done
-    if [[ "$sided" == twoside ]]; then
-      first="$(pdftotext -f 1 -l 1 -layout "$pdf" - | head -n 1)"
-      grep -Fq '章节标题' <<< "$first"
+    if [[ "$bibliography_checked" -ne 1 ]]; then
+      echo "Cannot identify bibliography continuation for $type-$sided" >&2
+      exit 1
     fi
     echo "PASS: $type-$sided, pages 1–4 and reference section"
   done

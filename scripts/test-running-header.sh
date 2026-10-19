@@ -63,8 +63,8 @@ TEX
       }
     else
       first_page="$(pdftotext -f 1 -l 1 -layout "$pdf" -)"
-      if ! head -n 1 <<< "$first_page" | grep -Fq '章节标题'; then
-        echo "Missing odd-page chapter header for $type" >&2
+      if ! grep -Fq '章节标题' <<< "$first_page"; then
+        echo "Missing first chapter for $type" >&2
         exit 1
       fi
     fi

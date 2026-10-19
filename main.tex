@@ -42,10 +42,13 @@
   },
 }
 
+\input{styles/proposal-header.tex}
+
 \begin{document}
 \input{cover/cover.tex}
 \makefront
 \mainmatter
+\ProposalApplyRunningHeader
 \include{contents/01-basis}
 \include{contents/02-research}
 \include{contents/03-methodology}
@@ -53,5 +56,6 @@
 \include{contents/05-schedule}
 \include{contents/06-achievements}
 \bibmatter*
+\ProposalApplyRunningHeader
 \printbibliography
 \end{document}

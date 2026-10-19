@@ -1,0 +1,26 @@
+% 根据学位类型设置开题报告页眉。
+% 双面模式在偶数页显示学校与开题报告类型，奇数页保留章节标题。
+\ExplSyntaxOn
+\NewDocumentCommand{\ProposalRunningHeader}{}
+  {
+    西北农林科技大学
+    \int_compare:nNnTF {\g__nwafu_thesis_type_int} = {1}
+      {博士开题报告} {硕士开题报告}
+  }
+\cs_if_exist:NT \__nwafu_header_even:
+  {
+    \cs_set:Npn \__nwafu_header_even:
+      {\small \nouppercase{\ProposalRunningHeader}}
+  }
+\cs_if_exist:NT \__nwafu_header_center:
+  {
+    \cs_set:Npn \__nwafu_header_center:
+      {\small \nouppercase{\ProposalRunningHeader}}
+  }
+\NewDocumentCommand{\ProposalApplyRunningHeader}{}
+  {
+    \bool_if:NTF \g__nwafu_twoside_bool
+      {\nwafuhead[EC]{\small\nouppercase{\ProposalRunningHeader}}}
+      {\nwafuhead[C]{\small\nouppercase{\ProposalRunningHeader}}}
+  }
+\ExplSyntaxOff

@@ -23,10 +23,11 @@ mkdir -p "$out_dir"
 
 for variant in master-oneside master-twoside doctor-twoside; do
   work="$work_dir/$variant"
-  mkdir -p "$work/cover" "$work/contents" "$work/bib" "$work/fonts"
+  mkdir -p "$work/cover" "$work/contents" "$work/bib" "$work/fonts" "$work/styles"
   cp "$root/main.tex" "$root/latexmkrc" "$work/"
   cp "$root/cover/cover.tex" "$example" "$work/cover/"
   cp "$root/fonts/font-setup.tex" "$work/fonts/"
+  cp "$root/styles/proposal-header.tex" "$work/styles/"
   cp "$root/contents/"*.tex "$work/contents/"
   cp "$root/bib/references.bib" "$work/bib/"
 

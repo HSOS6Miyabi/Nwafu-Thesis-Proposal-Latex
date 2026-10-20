@@ -24,3 +24,7 @@
       {\nwafuhead[C]{\small\nouppercase{\ProposalRunningHeader}}}
   }
 \ExplSyntaxOff
+
+% frontmatter is called inside nwafuthesis's \makefront.
+% Apply the proposal header immediately after frontmatter configures page styles.
+\AddToHook{cmd/frontmatter/after}{\ProposalApplyRunningHeader}

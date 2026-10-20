@@ -2,7 +2,7 @@
 
 适用于硕士、博士研究生学位论文开题报告。封面采用学校 Word 开题报告的 A4 页面布局、标题层次、字号、字段排列及下划线形式；目录、正文、参考文献和页眉页脚使用 [nwafuthesis](https://ctan.org/pkg/nwafuthesis) 文档类的原生格式。
 
-正文页眉自动根据学位类型显示 **西北农林科技大学硕士开题报告** 或 **西北农林科技大学博士开题报告**。双面模式的另一侧保留章节标题，单面模式始终显示相应的开题报告名称。
+目录和正文页眉自动根据学位类型显示 **西北农林科技大学硕士开题报告** 或 **西北农林科技大学博士开题报告**。双面模式的另一侧保留章节标题，单面模式始终显示相应的开题报告名称。
 
 ## 页面组成
 
@@ -50,7 +50,8 @@
 - scripts/test-build.sh：编译和页次测试。
 - scripts/check-structure.py：验证六章正文、节与小节的顺序及 PDF 目录对应内容。
 - scripts/check-cover-layout.py：PDF 字体、封面标题间距检查。
-- scripts/test-running-header.sh：硕士、博士及单双面模式的页眉检查。
+- scripts/test-running-header.sh：硕士、博士及单双面模式的正文与参考文献页眉检查。
+- scripts/test-frontmatter-header.sh：自动生成多页目录，检查硕士、博士及单双面模式的目录页眉。
 
 本项目依赖外部 nwafuthesis 文档类，不包含该文档类、第三方字体及原始 Word 文件。正文样式来自 [nwafuthesis-l3](https://gitee.com/nwafu_nan/nwafuthesis-l3)，封面样式依据学校开题报告 Word 版式设计。模板通过 XeLaTeX 的 `\IfFontExistsTF` 自动检查可用字体：西文优先使用 **Times New Roman**（否则 XITS）；中文宋体优先使用 **SimSun／宋体**（否则 FandolSong）；中文黑体优先使用 **SimHei／黑体**（否则 FandolHei）。各字体独立判断，封面与正文共用选择结果；数学字体与楷体分别保持 XITS Math 和 FandolKai。请在本机依法安装所需字体，无需修改模板，也无需将商业字体文件提交至仓库。编译后可在 `main.log` 中搜索 `Proposal ... font:` 查看实际选中的字体。
 

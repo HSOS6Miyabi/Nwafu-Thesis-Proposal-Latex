@@ -92,6 +92,9 @@ jobs:
       - name: Compile and verify three public examples
         run: bash scripts/test-build.sh
 
+      - name: Validate multi-page contents headers
+        run: bash scripts/test-frontmatter-header.sh
+
       - name: Validate proposal running headers
         run: bash scripts/test-running-header.sh
 

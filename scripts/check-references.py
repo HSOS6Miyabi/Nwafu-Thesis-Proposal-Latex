@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate nwafuthesis reference syntax and the rendered usage examples.
+r"""Validate nwafuthesis reference syntax and the rendered usage examples.
 
 The class applies \labelformat to ordinary \ref commands. Consequently,
 adding a manual object name repeats labels such as 图 and 表; eqref is
@@ -62,8 +62,10 @@ def check_pdf(pdf: Path) -> None:
     compact = re.sub(r"\s+", "", rendered)
     invalid = [r"图图\d", r"表表\d", r"式式\(", r"\(式\("]
     for pattern in invalid:
-        if re.search(pattern, compact):
-            raise ValueError(f"{pdf.name}: duplicated reference detected: {pattern}")
+        found = re.search(pattern, compact)
+        if found:
+            near = compact[max(0, found.start() - 50):found.end() + 50]
+            raise ValueError(f"{pdf.name}: duplicated reference near {near!r}")
     required = {
         "图1-1是": "main figure reference",
         "引用图1-2a与图1-2b": "subfigure references",

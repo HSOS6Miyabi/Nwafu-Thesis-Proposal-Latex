@@ -1,7 +1,7 @@
 % 用例类型与格式依据压缩包 2 中的 nwafuthesis-l3 演示。
 \chapter{数学公式、定理与参考文献}
 \section{公式、编号与符号解释}
-使用 \verb|equation| 与 \verb|label| 自动编号公式。例如，式~\eqref{eq:demo-pythagoras} 表示勾股定理：
+使用 \verb|equation| 与 \verb|label| 自动编号公式。例如，\ref{eq:demo-pythagoras} 表示勾股定理：
 \begin{equation}
   a^2+b^2=c^2\label{eq:demo-pythagoras}
 \end{equation}
@@ -36,4 +36,4 @@
   \item 带定位说明的引用：\verb|\parencite[sec. 1]{latexproject}|，效果如\parencite[sec. 1]{latexproject}。
   \item 多篇文献：\verb|\cite{latexproject,ctan}|，效果如\cite{latexproject,ctan}。
 \end{itemize}
-最后通过 \verb|\printbibliography| 输出文末参考文献，交给 Biber 自动处理；图、表、公式引用则使用 \verb|\ref| 或 \verb|\eqref|，不要手动写编号。
+最后通过 \verb|\printbibliography| 输出文末参考文献，交给 Biber 自动处理。图、表、公式及章节交叉引用直接使用 \verb|\ref|，其输出已经包含名称和编号；子图使用 \verb|\autoref|。

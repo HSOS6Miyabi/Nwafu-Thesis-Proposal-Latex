@@ -89,6 +89,9 @@ jobs:
           kpsewhich FandolHei-Regular.otf
           kpsewhich XITS-Regular.otf
 
+      - name: Check cross-reference source conventions
+        run: python3 scripts/check-references.py .
+
       - name: Compile and verify three public examples
         run: bash scripts/test-build.sh
 

@@ -3,7 +3,7 @@
 
 \section{插图、题注与交叉引用}
 图形可通过 \verb|\includegraphics| 引入 PDF、PNG、JPG 等文件，也可以用 Ti\textit{k}Z 绘制矢量图。
-图~\ref{fig:demo-image} 是内置的示例图像；在正式报告中用自己的图片路径替换 \verb|example-image-a|。
+\ref{fig:demo-image} 是内置的示例图像；在正式报告中用自己的图片路径替换 \verb|example-image-a|。
 
 \begin{figure}[htbp]
   \centering
@@ -28,7 +28,7 @@
   \label{fig:demo-subfigures}
 \end{figure}
 
-可以分别引用图~\ref{fig:demo-sub-a} 与图~\ref{fig:demo-sub-b}，或引用整组图~\ref{fig:demo-subfigures}。
+可以分别引用\autoref{fig:demo-sub-a} 与\autoref{fig:demo-sub-b}，或引用整组\ref{fig:demo-subfigures}。
 
 \begin{figure}[htbp]
   \centering
@@ -51,7 +51,7 @@
 \end{figure}
 
 \section{三线表、双语表题与交叉引用}
-表~\ref{tab:demo-booktabs} 使用 \texttt{booktabs} 的三线表命令，表~\ref{tab:demo-bilingual} 演示双语题注。
+\ref{tab:demo-booktabs} 使用 \texttt{booktabs} 的三线表命令，\ref{tab:demo-bilingual} 演示双语题注。
 \begin{table}[htbp]
   \centering
   \caption{三线表排版示例}

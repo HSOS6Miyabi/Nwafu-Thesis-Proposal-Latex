@@ -17,5 +17,6 @@ pdf="$tmp/main.pdf"
 pdftotext "$pdf" - | grep -q '插图与表格'
 pdftotext "$pdf" - | grep -q '数学公式'
 pdftotext "$pdf" - | grep -q '参考文献'
+python3 "$root/scripts/check-references.py" "$root" --pdf "$pdf"
 cp "$pdf" "$root/dist/usage-examples.pdf"
 echo "PASS: formatting examples => $root/dist/usage-examples.pdf"

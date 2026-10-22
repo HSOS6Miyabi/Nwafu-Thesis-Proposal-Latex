@@ -25,12 +25,23 @@ GitHub Actions 会同时编译本手册和三种开题报告配置，将 PDF 上
 | CSV 自动生成表格 | `csvsimple-l3`、`\csvreader` |
 | 横向页面与宽表格 | `landscape` |
 | 数值、角度、国际单位 | `siunitx`、`\num`、`\SI`、`\ang` |
-| 行间公式、多行公式、符号解释 | `contents/math-citations.tex` 的 `equation`、`aligned`、`\eqref` |
+| 行间公式、多行公式、符号解释 | `contents/math-citations.tex` 的 `equation`、`aligned`、`\ref` |
 | 定义、定理、证明 | `definition`、`theorem`、`proof` |
 | 著者－出版年引用、多文献引用 | `\cite`、`\textcite`、`\parencite` 和 Biber |
 | `tabularray` 合并单元格、跨页长表格、表格注释 | 下方参考代码 |
 
 图片采用 TeX Live 的 `mwe` 宏包提供的 `example-image-a`、`example-image-b`，CSV 和 Bib 文件均为通用示例，没有使用私人照片、姓名或学号。
+
+## 交叉引用示例
+
+该文档类使用 `\labelformat` 自动显示引用对象的名称和编号。直接引用标签即可：
+
+```latex
+如 \ref{fig:demo-image} 所示，使用 \ref{tab:demo-booktabs} 对比结果。
+根据 \ref{eq:demo-pythagoras} 计算，细节参见 \autoref{fig:demo-sub-a}。
+```
+
+完整图、表、公式使用 `\ref`，子图使用 `\autoref`；子图单独使用 `\ref` 时，仅显示子图编号。
 
 ## tabularray 排版代码
 
@@ -99,6 +110,6 @@ GitHub Actions 会同时编译本手册和三种开题报告配置，将 PDF 上
 
 ## 编写开题报告时的使用方式
 
-将上述源代码复制到 `contents/` 中相应章节，并替换示例图像、实验数据与引用。正式参考文献写入根目录的 `bib/references.bib`。使用 `\label` 及 `\ref`、`\eqref` 建立图表和公式的交叉引用，使用 `\cite` 和 Biber 管理文献。跨页 `longtblr` 应直接使用，不需要再嵌套 `table` 浮动体。
+将上述源代码复制到 `contents/` 中相应章节，并替换示例图像、实验数据与引用。正式参考文献写入根目录的 `bib/references.bib`。使用 `\label` 设置图表和公式标签，使用 `\ref` 引用整个图、表、公式及章节，子图使用 `\autoref`。`nwafuthesis` 已为 `\ref` 添加“图”“表”“式”等标识，引用时直接写命令即可。使用 `\cite` 和 Biber 管理文献。跨页 `longtblr` 应直接使用，不需要再嵌套 `table` 浮动体。
 
 本手册参考的功能和写法来自 [nwafuthesis-l3](https://gitee.com/nwafu_nan/nwafuthesis-l3)（木兰宽松许可证第 2 版）。示例文本和数据均采用通用内容。

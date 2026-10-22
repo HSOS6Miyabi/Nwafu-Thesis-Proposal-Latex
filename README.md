@@ -67,6 +67,8 @@
 
 `\ref` 在 `nwafuthesis` 中会根据标签类型自动显示名称：插图为“图 1-1”、表格为“表 1-1”、公式为“式(1-1)”，无需在命令前添加对象名称。子图引用使用 `\autoref`，例如输出“图 1-2a”。源码与编译后的 PDF 均设有重复名称检测。
 
+本地编译产生的辅助文件、日志、SyncTeX 数据及 `dist/`、`build/` 等构建目录由 `.gitignore` 排除。项目根目录和 `examples/` 入口编译生成的 PDF 也会被忽略；需要纳入版本管理的 PDF 插图请放在 `figures/`、`assets/` 等素材目录。运行 `bash scripts/test-gitignore.sh` 可以检查这些规则。
+
 ## GitHub Actions 自动编译
 
 仓库使用 [LaTeX CI](.github/workflows/latex-ci.yml) 工作流，在向 `main` 分支推送、提交 Pull Request 或手动运行时，自动检查并编译以下公开示例：

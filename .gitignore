@@ -1,39 +1,77 @@
-# LaTeX temporary and generated files
+# XeLaTeX, latexmk and Biber intermediate files
 *.aux
+*.auxlock
 *.bbl
 *.bcf
 *.blg
+*.blx.bib
+*.run.xml
 *.fdb_latexmk
 *.fls
 *.log
 *.out
-*.run.xml
+*.synctex
 *.synctex.gz
+*.synctex.gz(busy)
+*.xdv
+*.dvi
 *.toc
 *.lof
 *.lot
-*.xdv
+*.lol
 *.nav
 *.snm
 *.vrb
+*.thm
+*.maf
+*.mtc
+*.mtc[0-9]*
 *.acn
 *.acr
 *.alg
 *.glg
 *.glo
 *.gls
+*.glsdefs
 *.ist
 *.ilg
 *.ind
 *.idx
 *.xdy
-*.synctex
-*.lock
-*.pdf
+*.nlo
+*.nls
+*.nlg
+*.bbl-SAVE-ERROR
 
-# Local personal-information files
-cover/information-private.tex
-cover/information.tex
-local/
-private/
+# Automatically generated directories
+_minted-*/
+/dist/
+/build/
+/out/
+/_build/
+
+# Compiled PDFs from the project entrypoints.
+# PDF figures stored in figures/ or assets/ remain version-controlled.
+/*.pdf
+/examples/*.pdf
+
+# Local personal information and drafts
+/cover/information-private.tex
+/cover/information.tex
+/local/
+/private/
+
+# Editor, operating-system and Python cache files
 .DS_Store
+Thumbs.db
+Desktop.ini
+*~
+*.swp
+*.swo
+.#*
+\#*#
+.idea/
+.vscode/
+__pycache__/
+*.py[cod]
+.pytest_cache/

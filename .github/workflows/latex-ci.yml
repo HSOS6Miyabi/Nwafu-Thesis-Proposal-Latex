@@ -28,6 +28,9 @@ jobs:
             exit 1
           fi
 
+      - name: Validate Git ignore rules
+        run: bash scripts/test-gitignore.sh
+
       - name: Install fonts and PDF inspection tools
         run: |
           sudo apt-get update

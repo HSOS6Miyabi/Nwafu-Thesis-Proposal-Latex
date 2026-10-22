@@ -60,12 +60,17 @@ def check_pdf(pdf: Path) -> None:
         capture_output=True, text=True, check=True
     ).stdout
     compact = re.sub(r"\s+", "", rendered)
+    # Scan each PDF text line independently. Captions on neighboring lines
+    # must not be concatenated into artificial duplicated labels.
     invalid = [r"图图\d", r"表表\d", r"式式\(", r"\(式\("]
-    for pattern in invalid:
-        found = re.search(pattern, compact)
-        if found:
-            near = compact[max(0, found.start() - 50):found.end() + 50]
-            raise ValueError(f"{pdf.name}: duplicated reference near {near!r}")
+    for line_no, line in enumerate(rendered.splitlines(), 1):
+        clean_line = re.sub(r"[ \t]+", "", line)
+        for pattern in invalid:
+            found = re.search(pattern, clean_line)
+            if found:
+                raise ValueError(
+                    f"{pdf.name}:{line_no}: duplicated reference in {line.strip()!r}"
+                )
     required = {
         "图1-1是": "main figure reference",
         "引用图1-2a与图1-2b": "subfigure references",

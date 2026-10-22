@@ -22,12 +22,23 @@ PREFIX_BEFORE_REF = re.compile(
 EQREF = re.compile(r"\\eqref\s*\{")
 # \autoref on a full figure or table doubles the label under nwafuthesis.
 AUTOREF_TABLE = re.compile(r"\\autoref\s*\{\s*tab:")
+AUTOREF_FIGURE = re.compile(r"\\autoref\s*\{\s*(fig:[^}]+)\s*\}")
+SUBFIGURE_BLOCK = re.compile(
+    r"\\begin\{subfigure\}.*?\\end\{subfigure\}", flags=re.DOTALL
+)
+FIGURE_LABEL = re.compile(r"\\label\s*\{\s*(fig:[^}]+)\s*\}")
 LABEL_WITHOUT_PREFIX = re.compile(r"\\ref\s*\{\s*(?:fig|tab|eq):")
 
 def check_source(root: Path) -> None:
     target_paths = sorted(root.glob("contents/*.tex"))
     target_paths += sorted(root.glob("examples/**/*.tex"))
     target_paths += [root / "README.md", root / "examples" / "README.md"]
+    subfigure_labels: set[str] = set()
+    for path in root.glob("examples/**/*.tex"):
+        data = path.read_text(encoding="utf-8")
+        for block in SUBFIGURE_BLOCK.findall(data):
+            subfigure_labels.update(FIGURE_LABEL.findall(block))
+
     violations = []
     for path in target_paths:
         if not path.is_file():
@@ -41,6 +52,12 @@ def check_source(root: Path) -> None:
             for match in regexp.finditer(data):
                 line = data.count("\n", 0, match.start()) + 1
                 violations.append(f"{path.relative_to(root)}:{line}: {hint}")
+        for match in AUTOREF_FIGURE.finditer(data):
+            if match.group(1) not in subfigure_labels:
+                line = data.count("\n", 0, match.start()) + 1
+                violations.append(
+                    f"{path.relative_to(root)}:{line}: ordinary figure uses autoref instead of ref"
+                )
     # Ensure the usage sample still contains working ordinary references.
     figures = (root / "examples" / "contents" / "figures-tables.tex").read_text()
     formulas = (root / "examples" / "contents" / "math-citations.tex").read_text()

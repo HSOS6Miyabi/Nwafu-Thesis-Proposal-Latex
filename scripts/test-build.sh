@@ -104,7 +104,7 @@ for variant in master-oneside master-twoside doctor-twoside; do
     exit 1
   }
 
-  python3 "$root/scripts/check-cover-layout.py" "$pdf" "$work/build.log"
+  python3 "$root/scripts/check-cover-layout.py" "$pdf" "$work/main.log"
   python3 "$root/scripts/check-structure.py" "$work" "$work/main.toc"
   if [[ -n "${PROPOSAL_CI_CACHE_DIR:-}" ]]; then
     bash "$root/scripts/cache-latexmk.sh" save "$work" "$PROPOSAL_CI_CACHE_DIR" "$variant"

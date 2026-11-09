@@ -92,10 +92,22 @@ jobs:
           kpsewhich FandolHei-Regular.otf
           kpsewhich XITS-Regular.otf
 
+      - name: Test incremental LaTeX cache
+        run: bash scripts/test-cache-latexmk.sh
+
+      - name: Restore incremental compilation cache
+        uses: actions/cache@v4
+        with:
+          path: .latexmk-ci-cache
+          key: latexmk-${{ runner.os }}-tl2026-v1-${{ github.sha }}
+          restore-keys: |
+            latexmk-${{ runner.os }}-tl2026-v1-
       - name: Check cross-reference source conventions
         run: python3 scripts/check-references.py .
 
       - name: Compile and verify three public examples
+        env:
+          PROPOSAL_CI_CACHE_DIR: ${{ github.workspace }}/.latexmk-ci-cache
         run: bash scripts/test-build.sh
 
       - name: Validate multi-page contents headers
@@ -111,6 +123,8 @@ jobs:
         run: bash scripts/test-tikz-cache.sh
 
       - name: Compile and validate formatting manual
+        env:
+          PROPOSAL_CI_CACHE_DIR: ${{ github.workspace }}/.latexmk-ci-cache
         run: bash scripts/test-examples.sh
 
       - name: Upload example PDFs

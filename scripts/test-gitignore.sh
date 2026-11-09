@@ -10,6 +10,8 @@ must_ignore=(
   contents/01-basis.aux examples/main.aux examples/main.log
   main.pdf examples/main.pdf dist/master-oneside.pdf build/main.pdf out/main.pdf
   _minted-main/highlight.pygtex examples/_minted-main/highlight.pygtex
+  .latexmk-ci-cache/master-oneside/main.aux .latexmk-ci-work/master-oneside/main.pdf
+  tikz-cache/figure0.pdf tikz-cache/enable.tex
   cover/information-private.tex cover/information.tex
   private/student.tex local/notes.tex
   .DS_Store .vscode/settings.json __pycache__/helper.pyc
@@ -24,6 +26,7 @@ must_keep=(
   README.md examples/README.md latexmkrc
   .github/workflows/latex-ci.yml
   references.lock
+  scripts/build-fast.sh scripts/cache-latexmk.sh
 )
 
 for path in "${must_ignore[@]}"; do

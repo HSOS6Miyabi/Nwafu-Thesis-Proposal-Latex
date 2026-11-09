@@ -69,6 +69,12 @@
 
 本地编译产生的辅助文件、日志、SyncTeX 数据及 `dist/`、`build/` 等构建目录由 `.gitignore` 排除。项目根目录和 `examples/` 入口编译生成的 PDF 也会被忽略；需要纳入版本管理的 PDF 插图请放在 `figures/`、`assets/` 等素材目录。运行 `bash scripts/test-gitignore.sh` 可以检查这些规则。
 
+## 编译加速
+
+本地常规编译执行 `latexmk -xelatex main.tex`，会复用已有的编译中间文件。当正文含有复杂的 TikZ 图形时，可运行 `bash scripts/build-fast.sh`，按需启用 TikZ externalization，将独立图形缓存到 `tikz-cache/`。封面的绝对定位图形不参与外部编译。此模式使用 `-shell-escape`，仅用于可信的本地 LaTeX 文件；常规编译与 CI 均不启用该选项。
+
+GitHub Actions 参照 [Doctor-Thesis-Proposal](https://github.com/HSOS6Miyabi/Doctor-Thesis-Proposal) 的机制，使用 `actions/cache@v4` 保存 latexmk、XeLaTeX 和 Biber 的中间文件。硕士单面、硕士双面、博士双面和独立使用手册分别缓存，构建目录保持固定，确保增量编译的依赖记录仍可使用。源文件变化后会重新编译受影响内容。缓存只保存公开示例的编译产物，不含私人封面信息或原始源文件。运行 `bash scripts/test-cache-latexmk.sh` 可检查缓存内容与配置隔离。
+
 ## GitHub Actions 自动编译
 
 仓库使用 [LaTeX CI](.github/workflows/latex-ci.yml) 工作流，在向 `main` 分支推送、提交 Pull Request 或手动运行时，自动检查并编译以下公开示例：

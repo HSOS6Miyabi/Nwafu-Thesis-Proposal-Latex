@@ -7,6 +7,11 @@
 
 \usepackage{tikz}
 \usetikzlibrary{calc}
+% Optional local TikZ figure caching, enabled by scripts/build-fast.sh.
+\IfFileExists{tikz-cache/enable.tex}{%
+  \usetikzlibrary{external}%
+  \tikzexternalize[prefix=tikz-cache/]%
+}{}
 \usepackage{booktabs}
 \usepackage{amsmath}
 

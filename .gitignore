@@ -75,3 +75,10 @@ Desktop.ini
 __pycache__/
 *.py[cod]
 .pytest_cache/
+
+# Cached public CI build artifacts, never committed
+/.latexmk-ci-cache/
+/.latexmk-ci-work/
+
+# Optional local TikZ externalization artifacts
+/tikz-cache/

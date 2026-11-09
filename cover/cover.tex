@@ -33,6 +33,8 @@
 \ProposalPrepareEnglishTitle{\ProposalEnglishNormalBox}{1.5}%
 \ProposalPrepareEnglishTitle{\ProposalEnglishModerateBox}{1.35}%
 \ProposalPrepareEnglishTitle{\ProposalEnglishCompactBox}{1.2}%
+% Page-anchored cover drawing must remain in the main document.
+\ifcsname tikzexternaldisable\endcsname\tikzexternaldisable\fi
 \begin{tikzpicture}[remember picture,overlay]
   \ProposalCoverNode{105}{53}{%
     {\ProposalSong\fontsize{18pt}{25pt}\selectfont 西北农林科技大学}}
@@ -97,5 +99,6 @@
     {\ProposalSong\fontsize{15pt}{20pt}\selectfont
       研究生通过开题论证日期：\quad\ProposalDate}}
 \end{tikzpicture}
+\ifcsname tikzexternalenable\endcsname\tikzexternalenable\fi
 \null
 \end{titlepage}

@@ -107,6 +107,9 @@ jobs:
       - name: Validate extended English title spacing
         run: bash scripts/test-cover-extended.sh
 
+      - name: Test optional TikZ figure caching
+        run: bash scripts/test-tikz-cache.sh
+
       - name: Compile and validate formatting manual
         run: bash scripts/test-examples.sh
 

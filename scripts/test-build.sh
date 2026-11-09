@@ -4,8 +4,14 @@ set -euo pipefail
 
 root="$(cd "$(dirname "$0")/.." && pwd)"
 out_dir="$root/dist"
-work_dir="$(mktemp -d)"
-trap 'rm -rf "$work_dir"' EXIT
+if [[ -n "${PROPOSAL_CI_CACHE_DIR:-}" ]]; then
+  command -v rsync >/dev/null
+  work_dir="$root/.latexmk-ci-work"
+  mkdir -p "$work_dir"
+else
+  work_dir="$(mktemp -d)"
+  trap 'rm -rf "$work_dir"' EXIT
+fi
 
 command -v latexmk >/dev/null
 command -v pdftotext >/dev/null
@@ -23,11 +29,15 @@ mkdir -p "$out_dir"
 
 for variant in master-oneside master-twoside doctor-twoside; do
   work="$work_dir/$variant"
+  if [[ -n "${PROPOSAL_CI_CACHE_DIR:-}" ]]; then
+    bash "$root/scripts/cache-latexmk.sh" restore "$work" "$PROPOSAL_CI_CACHE_DIR" "$variant"
+  fi
   mkdir -p "$work/cover" "$work/contents" "$work/bib" "$work/fonts" "$work/styles"
   cp "$root/main.tex" "$root/latexmkrc" "$work/"
   cp "$root/cover/cover.tex" "$example" "$work/cover/"
   cp "$root/fonts/font-setup.tex" "$work/fonts/"
   cp "$root/styles/proposal-header.tex" "$work/styles/"
+  find "$work/contents" -maxdepth 1 -type f -name '*.tex' -delete
   cp "$root/contents/"*.tex "$work/contents/"
   cp "$root/bib/references.bib" "$work/bib/"
 
@@ -96,6 +106,9 @@ for variant in master-oneside master-twoside doctor-twoside; do
 
   python3 "$root/scripts/check-cover-layout.py" "$pdf" "$work/build.log"
   python3 "$root/scripts/check-structure.py" "$work" "$work/main.toc"
+  if [[ -n "${PROPOSAL_CI_CACHE_DIR:-}" ]]; then
+    bash "$root/scripts/cache-latexmk.sh" save "$work" "$PROPOSAL_CI_CACHE_DIR" "$variant"
+  fi
   cp "$pdf" "$out_dir/$variant.pdf"
   echo "PASS: $variant ($page_count pages, TOC on page $toc_page) => $out_dir/$variant.pdf"
 done
